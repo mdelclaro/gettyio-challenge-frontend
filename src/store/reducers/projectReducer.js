@@ -1,11 +1,7 @@
-import { ADD_PROJECT } from "../actions/types";
+import { ADD_PROJECT, ADD_PROJECT_ERROR, SET_PROJECTS } from "../actions/types";
 
 const INITIAL_STATE = {
-  projects: [
-    { id: "1", title: "title 1", content: "content 1" },
-    { id: "2", title: "title 2", content: "content 2" },
-    { id: "3", title: "title 3", content: "content 3" }
-  ]
+  projects: null
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -14,6 +10,14 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         projects: [...state.projects, action.payload]
+      };
+    case ADD_PROJECT_ERROR:
+      console.log("error adding project: " + action.payload);
+      return state;
+    case SET_PROJECTS:
+      return {
+        ...state,
+        projects: action.payload
       };
     default:
       return state;

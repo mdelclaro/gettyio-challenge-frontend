@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 
-import { createProject } from "../../store/actions/projectActions";
+import { createProject } from "../../store/actions";
 
 class CreateProject extends Component {
   state = {
@@ -17,7 +17,7 @@ class CreateProject extends Component {
 
   handleOnSubmit = e => {
     e.preventDefault();
-    this.props.createProject({ ...this.state, id: Math.random() });
+    this.props.createProject({ ...this.state, userId: this.props.userId });
   };
 
   render() {
@@ -49,11 +49,17 @@ class CreateProject extends Component {
   }
 }
 
+const mapStateToProps = state => {
+  return {
+    userId: state.auth.userId
+  };
+};
+
 const mapDispatchToProps = {
   createProject: project => createProject(project)
 };
 
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps
 )(CreateProject);

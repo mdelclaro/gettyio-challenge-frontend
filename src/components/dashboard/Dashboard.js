@@ -1,10 +1,16 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 
+import { getProjects } from "../../store/actions";
+
 import Notifications from "./Notifications";
 import ProjectList from "../projects/ProjectList";
 
 class Dashboard extends Component {
+  async componentDidMount() {
+    await this.props.getProjects();
+  }
+
   render() {
     const { projects } = this.props;
 
@@ -29,4 +35,11 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(mapStateToProps)(Dashboard);
+const mapDispatchToProps = {
+  getProjects: () => getProjects()
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Dashboard);
