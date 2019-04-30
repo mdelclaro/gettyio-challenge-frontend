@@ -36,6 +36,34 @@ export const setProjects = projects => {
   };
 };
 
+export const getProject = id => {
+  return async () => {
+    try {
+      const result = await timeout(
+        fetch(`${dev_url}/projects/${id}`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json"
+            // Authorization: "Bearer " + token
+          }
+        })
+      );
+
+      if (result.ok) {
+        let res = await result.json();
+        return res;
+      } else {
+        let res = await result.json();
+        console.log(res);
+        return false;
+      }
+    } catch (err) {
+      console.log("Create project error: " + err);
+      return false;
+    }
+  };
+};
+
 export const createProject = ({ title, content, userId }) => {
   return async dispatch => {
     try {
