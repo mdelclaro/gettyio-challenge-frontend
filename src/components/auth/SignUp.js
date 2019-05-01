@@ -1,4 +1,8 @@
 import React, { Component } from "react";
+import { Redirect } from "react-router-dom";
+import { connect } from "react-redux";
+
+import { signUp } from "../../store/actions";
 
 class SignUp extends Component {
   state = {
@@ -16,10 +20,12 @@ class SignUp extends Component {
 
   handleOnSubmit = e => {
     e.preventDefault();
-    console.log(this.state);
+    this.props.signUp(this.state);
   };
 
   render() {
+    const { isAuth, authError } = this.props.auth;
+    if (isAuth) return <Redirect to="/" />;
     return (
       <div className="container">
         <form onSubmit={this.handleOnSubmit} className="white">
@@ -52,6 +58,9 @@ class SignUp extends Component {
 
           <div className="input-field">
             <button className="btn pink lighten-1 z-depth-0">Sign Up</button>
+            <div className="red-text center">
+              {authError && <p>{authError}</p>}
+            </div>
           </div>
         </form>
       </div>
@@ -59,4 +68,17 @@ class SignUp extends Component {
   }
 }
 
-export default SignUp;
+const mapStateToProps = state => {
+  return {
+    auth: state.auth
+  };
+};
+
+const mapDispatchToProps = {
+  signUp: data => signUp(data)
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(SignUp);

@@ -1,4 +1,10 @@
-import { LOGIN_SUCCESS, LOGIN_ERROR, LOGOUT } from "./types";
+import {
+  LOGIN_SUCCESS,
+  LOGIN_ERROR,
+  LOGOUT,
+  SIGNUP_ERROR,
+  SIGNUP_SUCCESS
+} from "./types";
 import { dev_url } from "../../config/config";
 
 import timeout from "../../utils/timeout";
@@ -21,16 +27,13 @@ export const signIn = ({ email, password }) => {
 
       if (result.ok) {
         let res = await result.json();
-        console.log(res);
         let { token, refreshToken, userId, expiryDate } = res;
         dispatch(loginSuccess(token, refreshToken, expiryDate, userId));
       } else {
         let res = await result.json();
-        console.log(res);
         dispatch(loginError(res));
       }
     } catch (err) {
-      console.log("Login error: " + err);
       dispatch(loginError(err));
     }
   };
@@ -66,7 +69,7 @@ export const signUp = data => {
     const { email, password, firstName, lastName } = data;
     try {
       const result = await timeout(
-        fetch(`${dev_url}/auth/signup`, {
+        fetch(`${dev_url}/signup`, {
           method: "POST",
           body: JSON.stringify({
             email,
@@ -81,18 +84,26 @@ export const signUp = data => {
       );
 
       if (result.ok) {
-        let res = await result.json();
-        console.log(res);
-        let { token, refreshToken, userId, expiryDate } = res;
-        dispatch(loginSuccess(token, refreshToken, expiryDate, userId));
+        dispatch(signupSuccess());
       } else {
         let res = await result.json();
-        console.log(res);
-        dispatch(loginError(res));
+        dispatch(signupError(res));
       }
     } catch (err) {
-      console.log("Login error: " + err);
-      dispatch(loginError(err));
+      dispatch(signupError(err));
     }
+  };
+};
+
+export const signupSuccess = () => {
+  return {
+    type: SIGNUP_SUCCESS
+  };
+};
+
+export const signupError = err => {
+  return {
+    type: SIGNUP_ERROR,
+    payload: err
   };
 };

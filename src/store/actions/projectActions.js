@@ -24,7 +24,7 @@ export const getProjects = () => {
         console.log(res);
       }
     } catch (err) {
-      console.log("Create project error: " + err);
+      console.log("Get projects error: " + err);
     }
   };
 };

@@ -1,4 +1,10 @@
-import { LOGIN_SUCCESS, LOGIN_ERROR, LOGOUT } from "../actions/types";
+import {
+  LOGIN_SUCCESS,
+  LOGIN_ERROR,
+  LOGOUT,
+  SIGNUP_ERROR,
+  SIGNUP_SUCCESS
+} from "../actions/types";
 
 const INITIAL_STATE = {
   token: null,
@@ -30,6 +36,19 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         state: INITIAL_STATE
+      };
+    case SIGNUP_SUCCESS:
+      console.log("Signup success");
+      return {
+        ...state,
+        isAuth: true,
+        authError: null
+      };
+    case SIGNUP_ERROR:
+      console.log("Signup error");
+      return {
+        ...state,
+        authError: action.payload.message
       };
     default:
       return state;
