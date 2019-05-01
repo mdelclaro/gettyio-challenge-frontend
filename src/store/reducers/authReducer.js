@@ -12,7 +12,8 @@ const INITIAL_STATE = {
   expiryDate: null,
   userId: null,
   isAuth: false,
-  authError: null
+  authError: null,
+  initials: null
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -24,6 +25,7 @@ export default (state = INITIAL_STATE, action) => {
         refreshToken: action.payload.refreshToken,
         expiryDate: action.payload.expiryDate,
         userId: action.payload.userId,
+        initials: action.payload.initials,
         isAuth: true,
         authError: null
       };

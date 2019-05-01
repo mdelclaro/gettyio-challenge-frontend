@@ -27,8 +27,7 @@ export const signIn = ({ email, password }) => {
 
       if (result.ok) {
         let res = await result.json();
-        let { token, refreshToken, userId, expiryDate } = res;
-        dispatch(loginSuccess(token, refreshToken, expiryDate, userId));
+        dispatch(loginSuccess(res));
       } else {
         let res = await result.json();
         dispatch(loginError(res));
@@ -39,14 +38,16 @@ export const signIn = ({ email, password }) => {
   };
 };
 
-export const loginSuccess = (token, refreshToken, expiryDate, userId) => {
+export const loginSuccess = data => {
+  const { token, refreshToken, userId, expiryDate, initials } = data;
   return {
     type: LOGIN_SUCCESS,
     payload: {
       token,
       refreshToken,
       expiryDate,
-      userId
+      userId,
+      initials
     }
   };
 };

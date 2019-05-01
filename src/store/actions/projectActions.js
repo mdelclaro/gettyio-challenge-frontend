@@ -87,10 +87,10 @@ export const createProject = ({ title, content, userId }) => {
         dispatch(addProject(res));
       } else {
         let res = await result.json();
-        console.log(res);
+        dispatch(addProjectError(res));
       }
     } catch (err) {
-      console.log("Create project error: " + err);
+      dispatch(addProjectError(err));
     }
   };
 };

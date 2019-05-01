@@ -21,6 +21,7 @@ class CreateProject extends Component {
   };
 
   render() {
+    const { projectError } = this.props;
     return (
       <div className="container">
         <form onSubmit={this.handleOnSubmit} className="white">
@@ -42,6 +43,9 @@ class CreateProject extends Component {
 
           <div className="input-field">
             <button className="btn pink lighten-1 z-depth-0">Create</button>
+            <div className="red-text center">
+              {projectError && <p>{projectError}</p>}
+            </div>
           </div>
         </form>
       </div>
@@ -51,7 +55,8 @@ class CreateProject extends Component {
 
 const mapStateToProps = state => {
   return {
-    userId: state.auth.userId
+    userId: state.auth.userId,
+    projectError: state.project.projectError
   };
 };
 

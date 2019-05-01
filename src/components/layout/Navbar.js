@@ -12,7 +12,11 @@ const Navbar = ({ auth }) => {
         <Link to="/" className="brand-logo">
           Projects
         </Link>
-        {auth.isAuth ? <SignedInLinks /> : <SignedOutLinks />}
+        {auth.isAuth ? (
+          <SignedInLinks initials={auth.initials} />
+        ) : (
+          <SignedOutLinks />
+        )}
       </div>
     </nav>
   );
