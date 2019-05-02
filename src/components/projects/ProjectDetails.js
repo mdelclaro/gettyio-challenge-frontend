@@ -64,7 +64,7 @@ class ProjectDetails extends Component {
       </div>
     ) : (
       <div className="container center">
-        <p>Loading project...</p>
+        <h2>Project not found</h2>
       </div>
     );
   }

@@ -29,12 +29,11 @@ export const getProjects = () => {
       if (result.ok) {
         let res = await result.json();
         dispatch(setProjects(res));
-      } else {
-        let res = await result.json();
-        console.log(res);
+        return true;
       }
     } catch (err) {
       console.log("Get projects error: " + err);
+      return false;
     }
   };
 };
@@ -61,8 +60,7 @@ export const getProject = id => {
       );
 
       if (result.ok) {
-        let res = await result.json();
-        return res;
+        return true;
       } else {
         let res = await result.json();
         console.log(res);

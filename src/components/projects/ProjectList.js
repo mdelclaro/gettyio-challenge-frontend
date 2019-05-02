@@ -15,9 +15,7 @@ const ProjectList = ({ projects }) => {
           );
         })
       ) : (
-        <div className="container">
-          <p>No projects found</p>
-        </div>
+        <h2>No projects found</h2>
       )}
     </div>
   );
