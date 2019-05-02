@@ -1,4 +1,5 @@
 import { ADD_PROJECT, ADD_PROJECT_ERROR, SET_PROJECTS } from "./types";
+import { retrieveToken } from "./authAction";
 import { dev_url } from "../../config/config";
 
 import timeout from "../../utils/timeout";
@@ -6,12 +7,13 @@ import timeout from "../../utils/timeout";
 export const getProjects = () => {
   return async dispatch => {
     try {
+      const token = await dispatch(retrieveToken());
       const result = await timeout(
         fetch(`${dev_url}/projects`, {
           method: "GET",
           headers: {
-            "Content-Type": "application/json"
-            // Authorization: "Bearer " + token
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token
           }
         })
       );
@@ -37,14 +39,15 @@ export const setProjects = projects => {
 };
 
 export const getProject = id => {
-  return async () => {
+  return async dispatch => {
     try {
+      const token = await dispatch(retrieveToken());
       const result = await timeout(
         fetch(`${dev_url}/projects/${id}`, {
           method: "GET",
           headers: {
-            "Content-Type": "application/json"
-            // Authorization: "Bearer " + token
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token
           }
         })
       );
@@ -67,6 +70,7 @@ export const getProject = id => {
 export const createProject = ({ title, content, userId }) => {
   return async dispatch => {
     try {
+      const token = await dispatch(retrieveToken());
       const result = await timeout(
         fetch(`${dev_url}/projects`, {
           method: "POST",
@@ -76,8 +80,8 @@ export const createProject = ({ title, content, userId }) => {
             createdBy: userId
           }),
           headers: {
-            "Content-Type": "application/json"
-            // Authorization: "Bearer " + token
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token
           }
         })
       );

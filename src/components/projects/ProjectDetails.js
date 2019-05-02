@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import moment from "moment";
+import { Redirect } from "react-router-dom";
 
 import { getProject } from "../../store/actions";
 
@@ -13,12 +14,13 @@ class ProjectDetails extends Component {
     const { getProject, match } = this.props;
     const project = await getProject(match.params.id);
     this.setState({ project });
-    console.log(project);
   }
 
   render() {
     const id = this.props.match.params.id;
     const { project } = this.state;
+    const { isAuth } = this.props;
+    if (!isAuth) return <Redirect to="/signin" />;
     return project ? (
       <div className="container section project-details">
         <div className="card z-depth-0">
@@ -34,9 +36,7 @@ class ProjectDetails extends Component {
               {project.createdBy.lastName}
             </div>
             <div>
-              {moment(project.createdAt).format(
-                "dddd, MMMM Do YYYY. h:mm:ss a"
-              )}
+              {moment(project.createdAt).format("dddd, MMMM Do YYYY. h:mm a")}
             </div>
           </div>
         </div>
@@ -49,11 +49,17 @@ class ProjectDetails extends Component {
   }
 }
 
+const mapStateToProps = state => {
+  return {
+    isAuth: state.auth.isAuth
+  };
+};
+
 const mapDispathToProps = {
   getProject: id => getProject(id)
 };
 
 export default connect(
-  null,
+  mapStateToProps,
   mapDispathToProps
 )(ProjectDetails);

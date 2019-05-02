@@ -1,4 +1,6 @@
 import { createStore, combineReducers, applyMiddleware, compose } from "redux";
+import { persistStore, persistReducer } from "redux-persist";
+import storage from "redux-persist/lib/storage";
 import thunk from "redux-thunk";
 
 import authReducer from "./reducers/authReducer";
@@ -9,8 +11,22 @@ const rootReducer = combineReducers({
   project: projectReducer
 });
 
-const storeEnhancer = compose;
+const persistConfig = {
+  key: "root",
+  storage,
+  timeout: 0
+  // blacklist: ["auth"]
+};
 
-const store = createStore(rootReducer, storeEnhancer(applyMiddleware(thunk)));
+const persistedReducer = persistReducer(persistConfig, rootReducer);
 
-export default store;
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+
+const store = createStore(
+  persistedReducer,
+  composeEnhancers(applyMiddleware(thunk))
+);
+
+const persistor = persistStore(store);
+
+export { store, persistor };

@@ -8,7 +8,7 @@ import SignIn from "./components/auth/SignIn";
 import SignUp from "./components/auth/SignUp";
 import CreateProject from "./components/projects/CreateProject";
 
-function App() {
+const App = props => {
   return (
     <BrowserRouter>
       <div className="App">
@@ -23,6 +23,6 @@ function App() {
       </div>
     </BrowserRouter>
   );
-}
+};
 
 export default App;

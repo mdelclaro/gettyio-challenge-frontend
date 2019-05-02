@@ -36,7 +36,6 @@ export default (state = INITIAL_STATE, action) => {
       };
     case LOGOUT:
       return {
-        ...state,
         state: INITIAL_STATE
       };
     case SIGNUP_SUCCESS:

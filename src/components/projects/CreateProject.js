@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import { Redirect } from "react-router-dom";
 
 import { createProject } from "../../store/actions";
 
@@ -15,13 +16,18 @@ class CreateProject extends Component {
     });
   };
 
-  handleOnSubmit = e => {
+  handleOnSubmit = async e => {
     e.preventDefault();
-    this.props.createProject({ ...this.state, userId: this.props.userId });
+    await this.props.createProject({
+      ...this.state,
+      userId: this.props.auth.userId
+    });
+    this.props.history.push("/");
   };
 
   render() {
-    const { projectError } = this.props;
+    const { projectError, auth } = this.props;
+    if (!auth.isAuth) return <Redirect to="/signin" />;
     return (
       <div className="container">
         <form onSubmit={this.handleOnSubmit} className="white">
@@ -55,7 +61,7 @@ class CreateProject extends Component {
 
 const mapStateToProps = state => {
   return {
-    userId: state.auth.userId,
+    auth: state.auth,
     projectError: state.project.projectError
   };
 };
