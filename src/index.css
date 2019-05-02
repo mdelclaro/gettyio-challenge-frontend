@@ -23,6 +23,11 @@ form h5 {
   margin: 20px 0px;
 }
 
+.project-buttons {
+  margin-left: 5px;
+  margin-right: 5px;
+}
+
 input[type="text"]:not(.browser-default):focus:not([readonly]),
 input[type="email"]:not(.browser-default):focus:not([readonly]),
 input[type="password"]:not(.browser-default):focus:not([readonly]),

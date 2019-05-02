@@ -7,6 +7,7 @@ import ProjectDetails from "./components/projects/ProjectDetails";
 import SignIn from "./components/auth/SignIn";
 import SignUp from "./components/auth/SignUp";
 import CreateProject from "./components/projects/CreateProject";
+import EditProject from "./components/projects/EditProject";
 
 const App = props => {
   return (
@@ -15,8 +16,9 @@ const App = props => {
         <Navbar />
         <Switch>
           <Route exact path="/" component={Dashboard} />
-          <Route path="/project/:id" component={ProjectDetails} />
+          <Route exact path="/project/:id" component={ProjectDetails} />
           <Route path="/create" component={CreateProject} />
+          <Route exact path="/project/:id/edit" component={EditProject} />
           <Route path="/signin" component={SignIn} />
           <Route path="/signup" component={SignUp} />
         </Switch>

@@ -1,16 +1,21 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Redirect } from "react-router-dom";
 
-import { createProject } from "../../store/actions";
+import { updateProject, getProject } from "../../store/actions";
 
 import ProjectForm from "./ProjectForm";
 
-class CreateProject extends Component {
+class EditProject extends Component {
   state = {
     title: "",
     content: ""
   };
+
+  async componentDidMount() {
+    const { getProject, match } = this.props;
+    const project = await getProject(match.params.id);
+    await this.setState({ title: project.title, content: project.content });
+  }
 
   handleOnChange = e => {
     this.setState({
@@ -18,23 +23,23 @@ class CreateProject extends Component {
     });
   };
 
-  handleOnSubmit = async e => {
+  handleOnSubmit = e => {
     e.preventDefault();
-    await this.props.createProject({
+    this.props.updateProject({
       ...this.state,
-      userId: this.props.auth.userId
+      userId: this.props.userId,
+      projectId: this.props.match.params.id
     });
-    this.props.history.push("/");
   };
 
   render() {
-    const { projectError, auth } = this.props;
-    if (!auth.isAuth) return <Redirect to="/signin" />;
     return (
       <div className="container">
         <ProjectForm
-          pageTitle="Create"
+          pageTitle="Edit"
           error={this.props.projectsError}
+          title={this.state.title}
+          content={this.state.content}
           handleOnChange={this.handleOnChange}
           handleOnSubmit={this.handleOnSubmit}
         />
@@ -51,10 +56,11 @@ const mapStateToProps = state => {
 };
 
 const mapDispatchToProps = {
-  createProject: project => createProject(project)
+  updateProject: project => updateProject(project),
+  getProject: id => getProject(id)
 };
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(CreateProject);
+)(EditProject);
