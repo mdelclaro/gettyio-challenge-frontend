@@ -29,8 +29,9 @@ export default (state = INITIAL_STATE, action) => {
     case EDIT_PROJECT:
       return {
         ...state,
-        projects: state.projects.map((project, i) =>
-          project[i]._id === action.payload._id
+        projectsError: null,
+        projects: state.projects.map(project =>
+          project._id === action.payload._id
             ? {
                 ...project,
                 title: action.payload.title,
@@ -47,8 +48,9 @@ export default (state = INITIAL_STATE, action) => {
     case REMOVE_PROJECT:
       return {
         ...state,
+        projectsError: null,
         projects: state.projects.filter(
-          (project, i) => project[i]._id !== action.payload._id
+          project => project._id !== action.payload
         )
       };
     case REMOVE_PROJECT_ERROR:

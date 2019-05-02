@@ -17,9 +17,10 @@ class ProjectDetails extends Component {
     this.setState({ project });
   }
 
-  handleOnDelete = e => {
+  handleOnDelete = async e => {
     e.preventDefault();
-    this.props.deleteProject(this.props.match.params.id);
+    const exec = await this.props.deleteProject(this.props.match.params.id);
+    if (exec) this.props.history.push("/");
   };
 
   render() {

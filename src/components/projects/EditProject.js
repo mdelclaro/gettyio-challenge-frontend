@@ -23,13 +23,14 @@ class EditProject extends Component {
     });
   };
 
-  handleOnSubmit = e => {
+  handleOnSubmit = async e => {
     e.preventDefault();
-    this.props.updateProject({
+    const exec = await this.props.updateProject({
       ...this.state,
       userId: this.props.userId,
       projectId: this.props.match.params.id
     });
+    if (exec) this.props.history.push("/");
   };
 
   render() {

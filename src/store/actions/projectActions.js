@@ -97,12 +97,15 @@ export const createProject = ({ title, content, userId }) => {
       if (result.ok) {
         let res = await result.json();
         dispatch(addProject(res));
+        return true;
       } else {
         let res = await result.json();
         dispatch(addProjectError(res));
+        return false;
       }
     } catch (err) {
       dispatch(addProjectError(err));
+      return false;
     }
   };
 };
@@ -124,6 +127,7 @@ export const addProjectError = error => {
 export const updateProject = data => {
   return async dispatch => {
     const { title, content, projectId } = data;
+    const token = await dispatch(retrieveToken());
     try {
       const result = await timeout(
         fetch(`${dev_url}/projects/${projectId}`, {
@@ -133,8 +137,8 @@ export const updateProject = data => {
             content
           }),
           headers: {
-            "Content-Type": "application/json"
-            // Authorization: "Bearer " + token
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token
           }
         })
       );
@@ -142,12 +146,15 @@ export const updateProject = data => {
       if (result.ok) {
         let res = await result.json();
         dispatch(editProject(res));
+        return true;
       } else {
         let res = await result.json();
         dispatch(editProjectError(res));
+        return false;
       }
     } catch (err) {
       dispatch(editProjectError(err));
+      return false;
     }
   };
 };
@@ -168,34 +175,37 @@ export const editProjectError = error => {
 
 export const deleteProject = projectId => {
   return async dispatch => {
+    const token = await dispatch(retrieveToken());
     try {
       const result = await timeout(
         fetch(`${dev_url}/projects/${projectId}`, {
           method: "DELETE",
           headers: {
-            "Content-Type": "application/json"
-            // Authorization: "Bearer " + token
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token
           }
         })
       );
 
       if (result.ok) {
-        let res = await result.json();
-        dispatch(removeProject(res));
+        dispatch(removeProject(projectId));
+        return true;
       } else {
         let res = await result.json();
         dispatch(removeProjectError(res));
+        return false;
       }
     } catch (err) {
       dispatch(removeProjectError(err));
+      return false;
     }
   };
 };
 
-export const removeProject = project => {
+export const removeProject = projectId => {
   return {
     type: REMOVE_PROJECT,
-    payload: project
+    payload: projectId
   };
 };
 

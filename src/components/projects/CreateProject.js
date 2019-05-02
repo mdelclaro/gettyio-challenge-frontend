@@ -34,7 +34,7 @@ class CreateProject extends Component {
       <div className="container">
         <ProjectForm
           pageTitle="Create"
-          error={this.props.projectsError}
+          error={projectError}
           handleOnChange={this.handleOnChange}
           handleOnSubmit={this.handleOnSubmit}
         />
@@ -45,7 +45,7 @@ class CreateProject extends Component {
 
 const mapStateToProps = state => {
   return {
-    userId: state.auth.userId,
+    auth: state.auth,
     projectsError: state.project.projectsError
   };
 };
