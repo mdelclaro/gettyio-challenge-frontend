@@ -60,7 +60,8 @@ export const getProject = id => {
       );
 
       if (result.ok) {
-        return true;
+        let res = await result.json();
+        return res;
       } else {
         let res = await result.json();
         console.log(res);
