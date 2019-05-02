@@ -1,4 +1,12 @@
-import { ADD_PROJECT, ADD_PROJECT_ERROR, SET_PROJECTS } from "./types";
+import {
+  ADD_PROJECT,
+  ADD_PROJECT_ERROR,
+  SET_PROJECTS,
+  EDIT_PROJECT,
+  EDIT_PROJECT_ERROR,
+  REMOVE_PROJECT,
+  REMOVE_PROJECT_ERROR
+} from "./types";
 import { dev_url } from "../../config/config";
 
 import timeout from "../../utils/timeout";
@@ -87,10 +95,10 @@ export const createProject = ({ title, content, userId }) => {
         dispatch(addProject(res));
       } else {
         let res = await result.json();
-        console.log(res);
+        dispatch(addProjectError(res));
       }
     } catch (err) {
-      console.log("Create project error: " + err);
+      dispatch(addProjectError(err));
     }
   };
 };
@@ -105,6 +113,91 @@ export const addProject = project => {
 export const addProjectError = error => {
   return {
     type: ADD_PROJECT_ERROR,
+    payload: error
+  };
+};
+
+export const updateProject = data => {
+  return async dispatch => {
+    const { title, content, projectId } = data;
+    try {
+      const result = await timeout(
+        fetch(`${dev_url}/projects/${projectId}`, {
+          method: "PUT",
+          body: JSON.stringify({
+            title,
+            content
+          }),
+          headers: {
+            "Content-Type": "application/json"
+            // Authorization: "Bearer " + token
+          }
+        })
+      );
+
+      if (result.ok) {
+        let res = await result.json();
+        dispatch(editProject(res));
+      } else {
+        let res = await result.json();
+        dispatch(editProjectError(res));
+      }
+    } catch (err) {
+      dispatch(editProjectError(err));
+    }
+  };
+};
+
+export const editProject = project => {
+  return {
+    type: EDIT_PROJECT,
+    payload: project
+  };
+};
+
+export const editProjectError = error => {
+  return {
+    type: EDIT_PROJECT_ERROR,
+    payload: error
+  };
+};
+
+export const deleteProject = projectId => {
+  return async dispatch => {
+    try {
+      const result = await timeout(
+        fetch(`${dev_url}/projects/${projectId}`, {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json"
+            // Authorization: "Bearer " + token
+          }
+        })
+      );
+
+      if (result.ok) {
+        let res = await result.json();
+        dispatch(removeProject(res));
+      } else {
+        let res = await result.json();
+        dispatch(removeProjectError(res));
+      }
+    } catch (err) {
+      dispatch(removeProjectError(err));
+    }
+  };
+};
+
+export const removeProject = project => {
+  return {
+    type: REMOVE_PROJECT,
+    payload: project
+  };
+};
+
+export const removeProjectError = error => {
+  return {
+    type: REMOVE_PROJECT_ERROR,
     payload: error
   };
 };

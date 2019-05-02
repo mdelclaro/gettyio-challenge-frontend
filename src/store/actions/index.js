@@ -1,2 +1,8 @@
 export { signIn, logout } from "./authAction";
-export { createProject, getProjects, getProject } from "./projectActions";
+export {
+  createProject,
+  getProjects,
+  getProject,
+  updateProject,
+  deleteProject
+} from "./projectActions";
